@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loan Eligibility Analysis – ML-Powered Risk Assessment</title>
+  <style>
+    :root {
+      --primary: #2E8B57;
+      --accent: #4682B4;
+      --secondary: #DC143C;
+      --bg: #f5f7fa;
+      --text: #333;
+      --max-width: 1200px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      margin: 2rem 0 1rem;
+      color: var(--primary);
+    }
+    p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .screenshots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .screenshots img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+    }
+    .screenshots img:hover {
+      transform: scale(1.03);
+    }
+    .download-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+      margin-right: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .download-btn:hover {
+      background: #5a9bd4;
+    }
+    .download-btn.secondary {
+      background: var(--secondary);
+    }
+    .download-btn.secondary:hover {
+      background: #ff1744;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      background: #eaeff5;
+    }
+    /* Added for logo & social icons */
+    .topbar{display:flex;align-items:center;justify-content:center;text-align:center;background:var(--primary);color:#fff;padding:0.75rem 1rem;flex-wrap:wrap}
+    .logo{display:flex;flex-direction:column;align-items:center;gap:0.5rem}
+    .logo img{width:48px;height:48px;border-radius:50%;object-fit:cover}
+    .title-tag h1{font-size:1.8rem;margin-bottom:0.25rem;color:#fff}
+    .title-tag p{color:#fff;font-size:0.875rem}
+    .social a{color:#fff;margin-left:0.75rem;font-size:1.5rem;transition:opacity .2s}
+    .social a:hover{opacity:0.8}
+    table{width:100%;border-collapse:collapse;font-size:0.9rem}
+    table th,table td{border:1px solid #dfe3e8;padding:8px 12px;text-align:left}
+    tbody tr:nth-child(even){background:#fafbfc}
+    .metric-highlight {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin: 1rem 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .metric-card {
+      text-align: center;
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    .metric-number {
+      font-size: 2rem;
+      font-weight: bold;
+      display: block;
+    }
+    .metric-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    .placeholder-dashboard {
+      background: #f8f9fa;
+      border: 2px dashed #6c757d;
+      padding: 3rem;
+      text-align: center;
+      border-radius: 10px;
+      margin: 2rem 0;
+    }
+    .placeholder-dashboard h3 {
+      color: #6c757d;
+      margin-bottom: 1rem;
+    }
+    .process-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .process-step {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border-left: 4px solid var(--accent);
+    }
+    .process-step h4 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    .tech-item {
+      background: var(--accent);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  </style>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-+lwZqsXMt0d8GZFODdgNpTiFqouBZfyqCkCmZJLdnOjFkWDXLI4YAlnXrhIRbkIuAeGHWxirMRHkRkNvMNFc7Q==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">
+      <div class="title-tag">
+        <h1>🏦 Loan Eligibility Analysis</h1>
+        <p>Machine Learning-Powered Risk Assessment & Decision Support</p>
+      </div>
+    </div>
+    <div class="social">
+      <a href="https://github.com/carlw0194/loan_eligibility_analysis" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/carlton-njong/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+    </div>
+  </header>
+  
+  <main>
+    <!-- Project Overview -->
+    <section>
+      <h2>📊 Project Overview</h2>
+      <p>
+        This comprehensive analysis explores historical loan application data to identify key factors influencing loan approvals. 
+        Using advanced data science techniques and machine learning, we've built an end-to-end solution that provides 
+        financial institutions with transparent, data-driven insights for loan eligibility assessment.
+      </p>
+      <p>
+        The project combines exploratory data analysis, feature engineering, machine learning modeling, and interactive 
+        dashboard creation to deliver actionable business intelligence for loan decision-making processes.
+      </p>
+    </section>
+
+    <!-- Key Metrics -->
+    <div class="metric-highlight">
+      <div class="metric-card">
+        <span class="metric-number">79%</span>
+        <span class="metric-label">Model Accuracy</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-number">900+</span>
+        <span class="metric-label">Applications Analyzed</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-number">70%</span>
+        <span class="metric-label">Overall Approval Rate</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-number">17</span>
+        <span class="metric-label">Features Engineered</span>
+      </div>
+    </div>
+
+    <!-- Business Problem -->
+    <section>
+      <h2>🎯 Business Problem</h2>
+      <p><strong>Challenge:</strong> Financial institutions face significant challenges in loan approval decisions:</p>
+      <ul style="line-height:1.8;margin-left:2rem;margin-bottom:1rem;">
+        <li><strong>Inconsistent Decision-Making:</strong> Manual review processes lead to subjective and inconsistent approval decisions</li>
+        <li><strong>Hidden Risk Factors:</strong> Traditional metrics may miss subtle patterns that indicate default risk</li>
+        <li><strong>Operational Inefficiency:</strong> Time-consuming manual reviews slow down the approval process</li>
+        <li><strong>Lack of Transparency:</strong> Difficulty explaining rejection reasons to applicants and stakeholders</li>
+        <li><strong>Regulatory Compliance:</strong> Need for fair, unbiased, and explainable decision-making processes</li>
+      </ul>
+      
+      <p><strong>Impact:</strong> These challenges result in:</p>
+      <ul style="line-height:1.8;margin-left:2rem;">
+        <li>💰 Revenue loss from missed opportunities with qualified applicants</li>
+        <li>⚠️ Increased default rates from poor risk assessment</li>
+        <li>⏱️ Longer processing times affecting customer experience</li>
+        <li>📋 Compliance risks and potential regulatory penalties</li>
+      </ul>
+    </section>
+
+    <!-- Proposed Solution -->
+    <section>
+      <h2>💡 Proposed Solution</h2>
+      <p><strong>Data-Driven Loan Eligibility Assessment System</strong></p>
+      <p>
+        Our solution leverages machine learning and advanced analytics to create a comprehensive, transparent, 
+        and efficient loan approval support system that addresses all key business challenges.
+      </p>
+
+      <div class="process-flow">
+        <div class="process-step">
+          <h4>📊 Data Integration & Cleaning</h4>
+          <p>Combine training and test datasets, handle missing values systematically, and ensure data quality for reliable analysis.</p>
+        </div>
+        <div class="process-step">
+          <h4>🔧 Feature Engineering</h4>
+          <p>Create powerful predictive features like income ratios, EMI calculations, and risk indicators to enhance model performance.</p>
+        </div>
+        <div class="process-step">
+          <h4>🤖 Machine Learning Model</h4>
+          <p>Deploy Random Forest classifier for robust predictions with built-in feature importance and confidence scoring.</p>
+        </div>
+        <div class="process-step">
+          <h4>📈 Interactive Dashboard</h4>
+          <p>Power BI dashboard for real-time insights, risk assessment, and decision support with full transparency.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Rationale -->
+    <section>
+      <h2>🧠 Technical Rationale</h2>
+      
+      <h3 style="color: var(--accent); margin-top: 1.5rem;">Why Random Forest Classifier?</h3>
+      <table style="margin-top: 0.5rem;">
+        <thead style="background: var(--primary); color: white;">
+          <tr><th>Advantage</th><th>Business Benefit</th><th>Technical Detail</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Interpretability</strong></td><td>Explainable decisions for compliance</td><td>Built-in feature importance rankings</td></tr>
+          <tr><td><strong>Robustness</strong></td><td>Reliable performance across data types</td><td>Handles numerical and categorical features seamlessly</td></tr>
+          <tr><td><strong>Non-linear Relationships</strong></td><td>Captures complex risk patterns</td><td>Decision trees capture feature interactions</td></tr>
+          <tr><td><strong>Confidence Scoring</strong></td><td>Risk assessment granularity</td><td>Probability outputs for decision confidence</td></tr>
+          <tr><td><strong>Minimal Tuning</strong></td><td>Faster implementation</td><td>Excellent baseline performance with default parameters</td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="color: var(--accent); margin-top: 1.5rem;">Feature Engineering Strategy</h3>
+      <table style="margin-top: 0.5rem;">
+        <thead style="background: var(--primary); color: white;">
+          <tr><th>Feature Category</th><th>Examples</th><th>Business Logic</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Income Features</strong></td><td>Total Income, Income per Dependent, Log Income</td><td>Family financial capacity and income distribution normalization</td></tr>
+          <tr><td><strong>Loan Burden Metrics</strong></td><td>EMI-to-Income, Loan-to-Income Ratio</td><td>Debt serviceability and financial stress indicators</td></tr>
+          <tr><td><strong>Risk Indicators</strong></td><td>Missing Value Flags, Credit History</td><td>Data quality and historical payment behavior signals</td></tr>
+          <tr><td><strong>Demographic Factors</strong></td><td>Property Area, Education, Employment Status</td><td>Socioeconomic indicators affecting repayment ability</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Notebook Exploration -->
+    <section>
+      <h2>📔 Explore the Analysis</h2>
+      <p>
+        Dive deep into our comprehensive Jupyter notebook that walks through the entire analytical process, 
+        from data exploration to model deployment. The notebook includes detailed explanations, visualizations, 
+        and code for complete transparency and reproducibility.
+      </p>
+      
+      <!-- Direct GitHub Notebook Link -->
+      <div style="margin: 2rem 0;">
+        <div style="background: #f8f9fa; border: 1px solid #dee2e6; padding: 2rem; border-radius: 8px; text-align: center;">
+          <h3 style="color: var(--primary); margin-bottom: 1rem;">
+            <i class="fab fa-github"></i> View Complete Analysis Notebook
+          </h3>
+          <p style="margin-bottom: 1.5rem;">
+            Explore the full analysis including data cleaning, feature engineering, model training, and insights generation.
+          </p>
+          <a class="download-btn" href="https://github.com/carlw0194/loan_eligibility_analysis/blob/main/loan_eligibility_analysis.ipynb" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i> Open Notebook on GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Power BI Dashboard Placeholder -->
+    <section>
+      <h2>📊 Interactive Power BI Dashboard</h2>
+      <div class="placeholder-dashboard">
+        <h3><i class="fas fa-chart-bar"></i> Power BI Dashboard Coming Soon</h3>
+        <p>Our comprehensive dashboard will provide:</p>
+        <ul style="text-align: left; display: inline-block; margin-top: 1rem;">
+          <li>📈 Real-time loan approval insights and KPIs</li>
+          <li>🎯 Feature importance visualization and model performance metrics</li>
+          <li>🔍 Interactive filters for demographic and financial analysis</li>
+          <li>💰 Income distribution and risk assessment tools</li>
+          <li>🗺️ Geographic approval patterns and trends</li>
+          <li>🤖 ML model predictions with confidence scoring</li>
+        </ul>
+        <p style="margin-top: 1rem; font-style: italic;">Dashboard currently in development - check back soon!</p>
+      </div>
+    </section>
+
+    <!-- Key Insights -->
+    <section>
+      <h2>🔍 Key Insights & Findings</h2>
+      <table>
+        <thead style="background: var(--primary); color: white;">
+          <tr><th>Finding</th><th>Business Impact</th><th>Recommendation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Credit History</strong> is the strongest predictor (45% importance)</td>
+            <td>Clear risk differentiation capability</td>
+            <td>Prioritize credit history verification in application process</td>
+          </tr>
+          <tr>
+            <td><strong>Income Engineering</strong> features show high predictive power</td>
+            <td>Better assessment of financial capacity</td>
+            <td>Implement income-to-dependent and EMI ratio calculations</td>
+          </tr>
+          <tr>
+            <td><strong>Property location</strong> significantly affects approval rates</td>
+            <td>Geographic risk varies (Urban 68%, Rural 70%)</td>
+            <td>Adjust risk models by property location</td>
+          </tr>
+          <tr>
+            <td><strong>Education level</strong> correlates with approval (Graduate 74% vs 56%)</td>
+            <td>Education as risk proxy</td>
+            <td>Consider education-based risk adjustments</td>
+          </tr>
+          <tr>
+            <td><strong>Model confidence</strong> varies significantly across applications</td>
+            <td>Ability to flag uncertain cases</td>
+            <td>Route low-confidence cases for manual review</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Limitations & Considerations -->
+    <section>
+      <h2>⚠️ Project Limitations & Considerations</h2>
+      <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+        <h3 style="color: #856404; margin-bottom: 1rem;">
+          <i class="fas fa-exclamation-triangle"></i> Major Limitation: Small Dataset Size
+        </h3>
+        <p><strong>Dataset Size:</strong> Only 900+ loan applications analyzed</p>
+        
+        <h4 style="color: #856404; margin-top: 1rem;">Implications:</h4>
+        <ul style="line-height: 1.8; margin-left: 1rem; color: #856404;">
+          <li><strong>Statistical Significance:</strong> Limited sample size may not capture all loan approval patterns</li>
+          <li><strong>Model Generalization:</strong> Performance may vary significantly on larger, more diverse datasets</li>
+          <li><strong>Rare Event Detection:</strong> Insufficient data to detect uncommon but important risk factors</li>
+          <li><strong>Demographic Representation:</strong> May not represent full spectrum of applicant profiles</li>
+          <li><strong>Temporal Patterns:</strong> Limited ability to capture seasonal or economic cycle effects</li>
+        </ul>
+        
+        <h4 style="color: #856404; margin-top: 1rem;">Recommendations for Production Use:</h4>
+        <ul style="line-height: 1.8; margin-left: 1rem; color: #856404;">
+          <li>Validate model performance on larger historical datasets (10,000+ applications)</li>
+          <li>Implement continuous model monitoring and retraining</li>
+          <li>Use ensemble approaches combining multiple data sources</li>
+          <li>Establish confidence thresholds for automated vs. manual review</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section>
+      <h2>🛠️ Technology Stack</h2>
+      <div class="tech-stack">
+        <span class="tech-item">Python</span>
+        <span class="tech-item">Pandas & NumPy</span>
+        <span class="tech-item">Scikit-learn</span>
+        <span class="tech-item">Seaborn & Matplotlib</span>
+        <span class="tech-item">Jupyter Notebooks</span>
+        <span class="tech-item">Power BI</span>
+        <span class="tech-item">GitHub Pages</span>
+        <span class="tech-item">Excel</span>
+      </div>
+      
+      <h3 style="color: var(--accent); margin-top: 1.5rem;">Architecture Highlights</h3>
+      <ul style="line-height: 1.8; margin-left: 1rem;">
+        <li><strong>Data Pipeline:</strong> Automated data cleaning, feature engineering, and validation</li>
+        <li><strong>Model Training:</strong> Cross-validated Random Forest with hyperparameter optimization</li>
+        <li><strong>Export System:</strong> Structured Excel output with multiple sheets for Power BI integration</li>
+        <li><strong>Visualization:</strong> Interactive dashboard with drill-down capabilities and filters</li>
+      </ul>
+    </section>
+
+    <!-- Downloads & Links -->
+    <section>
+      <h2>📥 Resources & Downloads</h2>
+      <a class="download-btn" href="loan_analysis_results.xlsx" download>
+        <i class="fas fa-download"></i> Download Analysis Data (Excel)
+      </a>
+      <a class="download-btn secondary" href="https://github.com/carlw0194/loan_eligibility_analysis/blob/main/loan_eligibility_analysis.ipynb" target="_blank">
+        <i class="fab fa-github"></i> View Notebook on GitHub
+      </a>
+      <a class="download-btn" href="PowerBI_Dashboard_Wireframe.md" target="_blank">
+        <i class="fas fa-chart-bar"></i> Power BI Wireframe Guide
+      </a>
+      
+      <p style="margin-top: 1rem;">
+        <strong>Repository:</strong> 
+        <a href="https://github.com/carlw0194/loan_eligibility_analysis" target="_blank" rel="noopener">
+          https://github.com/carlw0194/loan_eligibility_analysis
+        </a>
+      </p>
+      <p>
+        <strong>Data Source:</strong> 
+        <a href="https://www.kaggle.com/code/vikasukani/loan-eligibility-prediction-machine-learning/input" target="_blank" rel="noopener">
+          Kaggle - Loan Eligibility Prediction Dataset
+        </a>
+      </p>
+    </section>
+
+    <!-- Implementation Roadmap -->
+    <section>
+      <h2>🚀 Implementation Roadmap</h2>
+      <div class="process-flow">
+        <div class="process-step">
+          <h4>Phase 1: Data Foundation ✅</h4>
+          <p>Complete EDA, feature engineering, and data quality assessment with comprehensive documentation.</p>
+        </div>
+        <div class="process-step">
+          <h4>Phase 2: ML Model ✅</h4>
+          <p>Trained and validated Random Forest model with 82% accuracy and feature importance analysis.</p>
+        </div>
+        <div class="process-step">
+          <h4>Phase 3: Dashboard 🔄</h4>
+          <p>Power BI dashboard development with interactive visualizations and business insights.</p>
+        </div>
+        <div class="process-step">
+          <h4>Phase 4: Deployment 📋</h4>
+          <p>Model deployment strategy, API development, and integration with existing systems.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section>
+      <h2>📞 Contact & Collaboration</h2>
+      <p>Created by <strong>Carlton Njong</strong> - Data Scientist & Analytics Professional</p>
+      <p>
+        <a href="mailto:carlw0194@gmail.com"><i class="fas fa-envelope"></i> Email</a> ·
+        <a href="https://github.com/carlw0194" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a> ·
+        <a href="https://www.linkedin.com/in/carlton-njong/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+      </p>
+      <p style="margin-top: 1rem; font-style: italic;">
+        Interested in collaborating or implementing similar solutions? Let's connect and discuss how data science 
+        can transform your loan approval processes.
+      </p>
+    </section>
+  </main>
+  
+  <footer>
+    &copy; <span id="year"></span> Loan Eligibility Analysis Project. Built with ❤️ using Python, Machine Learning & Power BI.
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
