@@ -4,6 +4,14 @@
 
 This project explores historical loan application data to uncover key factors influencing loan approvals. By combining data preparation, feature engineering, exploratory data analysis (EDA), and dashboard design, the project aims to provide financial institutions with a transparent, interactive tool for assessing loan eligibility. It is designed as a portfolio-worthy, end-to-end data analysis solution.
 
+## 📸 Project Screenshots
+
+### Overview Dashboard
+![Loan Analysis Overview](loan-analysis-overview.PNG)
+
+### Detailed Applicant Analysis
+![Detailed Applicant Analysis](loan-analysis-detailed-applicant.PNG)
+
 ---
 
 ## 🔍 Project Objectives
